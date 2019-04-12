@@ -33,6 +33,16 @@ import com.amazonaws.util.IOUtils;
 public class FaceDetector {
 
 	AmazonRekognition rekognitionClient;
+	
+	private Float similarityThreshold = 80F;
+
+	public Float getSimilarityThreshold() {
+		return similarityThreshold;
+	}
+
+	public void setSimilarityThreshold(Float similarityThreshold) {
+		this.similarityThreshold = similarityThreshold;
+	}
 
 	public FaceDetector() {
 		rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
@@ -43,7 +53,7 @@ public class FaceDetector {
 	 * To use S3 source image
 	 */
 	public Rectangle detectFace(Image source, BufferedImage targetImage, int panelWidth, int panelHeight) {
-		Float similarityThreshold = 80F;
+		
 		String sourceImage = "C:/Users/Fmtrain/Desktop/img/me.jpg";
 		// String targetImage = "C:/Users/Fmtrain/Desktop/img/me.jpg";
 		ByteBuffer sourceImageBytes = null;
@@ -99,7 +109,7 @@ public class FaceDetector {
 	 * To use local source image
 	 */
 	public Rectangle detectFace(String sourceImage, BufferedImage targetImage, int panelWidth, int panelHeight) {
-		Float similarityThreshold = 80F;
+		
 		//String sourceImage = "C:/Users/Fmtrain/Desktop/img/me.jpg";
 		// String targetImage = "C:/Users/Fmtrain/Desktop/img/me.jpg";
 		ByteBuffer sourceImageBytes = null;

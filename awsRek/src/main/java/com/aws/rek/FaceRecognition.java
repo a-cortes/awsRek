@@ -39,6 +39,12 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 	private WebcamPanel panel = null;
 	private FaceDetector detector;
 	private Image sourceImg = null;
+	private boolean show=false;
+	
+	public void showCam(boolean show) {
+		this.show=show;
+		setVisible(show);
+	}
 
 	public Image getSourceImg() {
 		return sourceImg;
@@ -46,6 +52,10 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 
 	public void setSourceImg(Image sourceImg) {
 		this.sourceImg = sourceImg;
+	}
+	
+	public FaceDetector getDetector() {
+		return detector;
 	}
 
 	public FaceRecognition() throws IOException {
@@ -70,7 +80,7 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 		webcam.setViewSize(resolution);
 
 		// webcam.setViewSize(WebcamResolution.VGA.getSize());
-		webcam.open(true);
+		//webcam.open(true);
 
 		panel = new WebcamPanel(webcam, false);
 		panel.setPreferredSize(WebcamResolution.VGA.getSize());
@@ -89,8 +99,14 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setLocationRelativeTo(null);
-		setVisible(true);
-
+		showCam(false);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		showCam(true);
 		EXECUTOR.execute(this);
 	}
 

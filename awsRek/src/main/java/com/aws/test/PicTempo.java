@@ -1,4 +1,4 @@
-package test;
+package com.aws.test;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
