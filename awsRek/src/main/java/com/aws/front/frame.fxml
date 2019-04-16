@@ -56,13 +56,13 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <Button id="startbtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Start Camera" />
-            <ComboBox id="personcombo" layoutX="301.0" layoutY="59.0" prefWidth="150.0" promptText="op1" />
+            <ComboBox id="personcombo" layoutX="301.0" layoutY="59.0" prefWidth="150.0" promptText="Person" />
             <Button id="rekbtn" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" text="Start Rekognition" />
-            <Slider id="confbar" layoutX="155.0" layoutY="64.0" />
-            <Label layoutX="155.0" layoutY="18.0" text="Confidence" />
+            <Slider id="confbar" layoutX="155.0" layoutY="64.0" value="70.0" />
+            <Label id="confText" layoutX="155.0" layoutY="18.0" text="Confidence: 70" />
             <Label layoutX="309.0" layoutY="18.0" prefHeight="17.0" prefWidth="101.0" text="Person" />
             <Label layoutX="486.0" layoutY="18.0" text="Filter" />
-            <ComboBox id="filtercombo" layoutX="466.0" layoutY="58.0" prefWidth="150.0" />
+            <ComboBox id="filtercombo" layoutX="466.0" layoutY="58.0" prefWidth="150.0" promptText="Square"/>
             <Accordion layoutX="37.0" layoutY="128.0" />
       </children>
     </AnchorPane>
