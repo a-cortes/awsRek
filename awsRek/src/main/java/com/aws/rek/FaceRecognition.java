@@ -3,10 +3,12 @@ package com.aws.rek;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +39,10 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 	private WebcamPanel.Painter painter = null;
 	private Rectangle face = null;
 	private BufferedImage filterImg = null;
+	private BufferedImage filterImgName = null;
+	private BufferedImage logoaws = null;
 	private String filterImgS = null;
+	private String filterImgNameS = null;
 	private WebcamPanel panel = null;
 	private FaceDetector detector;
 	private Image sourceImg = null;
@@ -67,6 +72,21 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 			e.printStackTrace();
 		}
 	}
+	
+	public BufferedImage getFilterImgName() {
+		return filterImgName;
+	}
+
+	public void setFilterImgName(String img) {
+		this.filterImgName = null;
+		try {
+			System.out.println(img);
+			this.filterImgName = ImageIO.read(getClass().getResourceAsStream(img));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void showCam(boolean show) {
 		this.show = show;
@@ -91,6 +111,12 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 		detector = new FaceDetector();
 //		filterImg = ImageIO.read(getClass().getResourceAsStream("/troll-face.png"));
 //		filterImg = ImageIO.read(getClass().getResourceAsStream("/goku1.png"));
+		try {
+			this.logoaws = ImageIO.read(getClass().getResourceAsStream("/POWERED-BY-AWS-LOGO.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		List<Webcam> cams = Webcam.getWebcams();
 		for (Webcam cam : cams) {
@@ -172,6 +198,8 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 		if (painter != null) {
 			painter.paintImage(panel, image, g2);
 		}
+		
+		g2.drawImage(logoaws, 0,0, 150, 50, null);
 
 		if (face == null) {
 			return;
@@ -193,6 +221,19 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 				w += (int) (bounds.width / 1);
 				h += (int) (bounds.height / 1);
 			}
+			
+			if (filterImgS.contains("Arrow")) {
+				
+				
+				
+				x += (int) (bounds.width/2);
+				y -= (int) (400);
+				w = (int) (300);
+				h = (int) (400);
+				
+				System.out.println(x+","+y+" "+w+" "+h);
+				
+			}
 //		System.out.println(x + " : " + y + " : " + w + " : " + h);
 		}else {
 			
@@ -202,6 +243,15 @@ public class FaceRecognition extends JFrame implements Runnable, WebcamPanel.Pai
 		}
 
 		g2.drawImage(filterImg, x, y, w, h, null);
+		g2.drawImage(filterImgName, panel.getWidth()-600, panel.getHeight()-100, 600, 100, null);
+		
+//		Font font = new Font(null, Font.TRUETYPE_FONT, 40);    
+//		AffineTransform affineTransform = new AffineTransform();
+//		affineTransform.rotate(Math.toRadians(45), 0, 0);
+//		Font rotatedFont = font.deriveFont(affineTransform);
+//		g2.setFont(rotatedFont);
+//		g2.drawString("A String",100,100);
+//		g2.dispose();
 	}
 
 	public static void main(String[] args) throws IOException {

@@ -55,6 +55,7 @@ public class FaceDetector {
 	 */
 	public Rectangle detectFace(Image source, BufferedImage targetImage, int panelWidth, int panelHeight) {	
 		
+		//System.out.println(source.getS3Object().getName());
 		ByteBuffer targetImageBytes = null;
 
 		try {
@@ -63,7 +64,7 @@ public class FaceDetector {
 			InputStream is = new ByteArrayInputStream(os.toByteArray());
 			targetImageBytes = ByteBuffer.wrap(IOUtils.toByteArray(is));
 		} catch (Exception e) {
-
+			
 		}
 		
 		Image target = new Image().withBytes(targetImageBytes);

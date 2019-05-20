@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
@@ -45,12 +46,12 @@ public class Frame extends Application {
 		return null;
 	}
 
-	private Set<String> getWinners() {
+	private TreeSet<String> getWinners() {
 		try (InputStream input = new FileInputStream("winners.properties")) {
 			Properties prop = new Properties();
 			// load a properties file
 			prop.load(input);
-			return prop.stringPropertyNames();
+			return new TreeSet<String>(prop.stringPropertyNames());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -66,7 +67,8 @@ public class Frame extends Application {
 		Scene scene = new Scene(root);
 
 		ComboBox filterList = (ComboBox) scene.lookup("#filtercombo");
-		filterList.getItems().addAll(new String[] { "Square", "Silverstar", "Goldstar", "Dog", "Dog1", "Troll", "Hearts" });
+		filterList.getItems()
+				.addAll(new String[] { "Arrow", "Square", "Silverstar", "Goldstar", "Dog", "Dog1", "Troll", "Hearts" });
 		filterList.valueProperty().addListener((obs, oldItem, newItem) -> {
 			if (newItem == null) {
 
@@ -91,6 +93,11 @@ public class Frame extends Application {
 			} else {
 				currentPic = newItem.toString();
 				Button startrek = (Button) scene.lookup("#rekbtn");
+				try {
+					rec.setFilterImgName("/" + newItem.toString() + ".PNG");
+				} catch (Exception e) {
+					System.out.println("Name pic not found for " + newItem.toString());
+				}
 				if (startrek.getText().contains("Stop")) {
 					rec.setSourceImg(getImageUtil(S3_BUCKET, getWinnerPic(currentPic)));
 					System.out.println("New: " + newItem.toString());
@@ -107,8 +114,9 @@ public class Frame extends Application {
 				rec.getDetector().setSimilarityThreshold((float) confSlider.getValue());
 			}
 		});
-
 		Button startcam = (Button) scene.lookup("#startbtn");
+		startcam.setText("Stop Camera");
+		rec.showCam(true);
 		EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
